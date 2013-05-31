@@ -1,8 +1,0 @@
-CC=gcc
-CFLAGS=-Wall -lX11
-
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-	
-hellomake: $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
