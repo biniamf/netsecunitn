@@ -42,6 +42,23 @@ conv_table[] = {
     {"odiaeresis","ö"},{"udiaeresis","ü"},{"adiaeresis","ä"},{"",""}
 };
 
+struct conv_special {
+    char from[20], to[5];
+}
+
+conv_tab_sp[] = {
+
+    {"1","!"},    {"2","@"},    {"3", "#"},
+    {"tab","\t"},
+    {"space", " "},     {"exclam", "!"},    {"quotedbl", "\""},
+    {"4", "$"},{"5", "%"},    {"6", "^"},
+    {"7", "&"}, {"8", "*"},{"9", "("},
+    {"10", ")"},{"-", "_"},  {"=", "+"},
+    {",", "<"},     {".", ">"},     {"/", "?"},
+    {"'", "\""},  {"[", "{"},     {"]", "}"},
+    {"\\", "|"},  {"",""}
+};
+
 int convert(char *data, char *out) {
     int i=0;
     while (conv_table[i].from[0] != 0 || conv_table[i].to[0] != 0) {
@@ -54,25 +71,43 @@ int convert(char *data, char *out) {
     return 0;
 }
 
+int check_sp(char *data, char *out) {
+    int i=0;
+    while (conv_tab_sp[i].from[0] != 0 || conv_tab_sp[i].to[0] != 0) {
+        if (!strncasecmp(data, conv_tab_sp[i].from, strlen(conv_tab_sp[i].from)) ) {
+            strcpy(out,  conv_tab_sp[i].to);
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
 
 void log1(char *buf, int masked)
 {
 	char in[128];
 
-	if (convert(buf, in)) {
-
-		if (strlen(in) > 1) // or ignore
-		printf("%s", in);
-		/*else {
+	if (strlen(buf) > 1) {// or ignore
+		if (convert(buf, in))
 			if (masked == 1) 
-				printf("%c", toupper(*in)); 
-		
+				if (check_sp(in, in))
+					printf("%s", in);
+				else
+					printf("%c", toupper(*buf));
 			else 
-				printf("%c", *in);				
-		}*/
-	}	
-	else 
-		printf("%s", buf);	
+				printf("%s", in);
+		else
+			printf("%s", buf);
+	}
+	else {
+		if (masked == 1)
+			if (check_sp(buf, in))
+				printf("%s", in);
+			else
+				printf("%c", toupper(*buf));
+		else
+			printf("%c", *buf);
+	}
 }
 
 int main() 
