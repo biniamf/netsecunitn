@@ -91,9 +91,9 @@ void log1(char *buf, int masked)
 		if (convert(buf, in))
 			if (masked == 1) 
 				if (check_sp(in, in))
-					printf("%s", in);
+					printf("%c", *in);
 				else
-					printf("%c", toupper(*buf));
+					printf("%c", *in);
 			else 
 				printf("%s", in);
 		else
@@ -215,7 +215,7 @@ int main()
 						} else if (strcmp(keyname, "period") == 0) {
 							keyname = ".";							
 						} */
-						
+
 						log1(keyname, masked);
 						//printf("%s", keyname);
 					} 
