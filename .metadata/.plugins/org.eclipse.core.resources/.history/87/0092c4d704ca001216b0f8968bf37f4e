@@ -1,9 +1,0 @@
-CC=gcc
-CFLAGS=-Wall -lX11
-OBJ = upload.o netsec.o 
-
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-	
-hellomake: $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
