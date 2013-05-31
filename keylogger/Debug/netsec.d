@@ -1,1 +1,0 @@
-netsec.d: ../netsec.c
