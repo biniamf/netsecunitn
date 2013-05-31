@@ -1,0 +1,10 @@
+CC=gcc
+CFLAGS=-Wall -lX11
+OBJ = upload.o
+
+all: keylogger 
+keylogger: $(OBJS)
+	$(CC) $(OBJS) -o $@ $< $(CFLAGS)
+	
+clean:
+	rm -f upload.o netsec.o keylogger

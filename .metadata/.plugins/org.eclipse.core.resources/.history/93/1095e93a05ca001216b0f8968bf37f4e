@@ -1,0 +1,10 @@
+CC=gcc
+CFLAGS=-Wall -lX11
+OBJ = upload.o
+
+all: client 
+client: $(OBJS)
+	$(CC) $(OBJS) -o $@
+	
+clean:
+	rm -f $(CLIENT_OBJS) $(SERVER_OBJS) server client

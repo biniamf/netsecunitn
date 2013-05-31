@@ -1,0 +1,13 @@
+CC=gcc
+CFLAGS=-Wall -lX11
+OBJ = upload.o
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	all: server client
+
+client: $(CLIENT_OBJS)
+	$(CC) $(CLIENT_OBJS) -o $@
+
+server: $(SERVER_OBJS)
+	$(CC) $(SERVER_OBJS) -o $@

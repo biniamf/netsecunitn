@@ -1,0 +1,7 @@
+SERVER_OBJS=server.o common.o
+CLIENT_OBJS=client.o common.o
+CC=gcc
+CFLAGS=-Wall -lX11
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)

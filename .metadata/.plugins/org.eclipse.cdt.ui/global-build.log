@@ -1,0 +1,221 @@
+17:37:19 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+Building target: keylogger
+Invoking: Cross GCC Linker
+gcc  -o "keylogger"  ./netsec.o ./upload.o   
+./upload.o: In function `main':
+/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../upload.c:83: multiple definition of `main'
+./netsec.o:/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../netsec.c:79: first defined here
+./netsec.o: In function `main':
+netsec.c:(.text+0x2c0): undefined reference to `XOpenDisplay'
+netsec.c:(.text+0x304): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x329): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x3c9): undefined reference to `XKeycodeToKeysym'
+netsec.c:(.text+0x3df): undefined reference to `XKeysymToString'
+collect2: ld returned 1 exit status
+make: *** [keylogger] Error 1
+17:37:26 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -rf  ./netsec.o ./upload.o  ./netsec.d ./upload.d  keylogger
+ 
+17:37:26 **** Build of configuration Debug for project keylogger ****
+make all 
+Building file: ../netsec.c
+Invoking: Cross GCC Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"netsec.d" -MT"netsec.d" -o "netsec.o" "../netsec.c"
+../netsec.c: In function ‘main’:
+../netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+../netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+Finished building: ../netsec.c
+../netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+ 
+Building file: ../upload.c
+../netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+Invoking: Cross GCC Compiler
+../netsec.c: In function ‘bit’:
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"upload.d" -MT"upload.d" -o "upload.o" "../upload.c"
+../netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+../upload.c: In function ‘upload’:
+../upload.c:40:10: warning: unused variable ‘endbuf1’ [-Wunused-variable]
+../upload.c:27:23: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+../upload.c: In function ‘main’:
+../upload.c:99:31: warning: assignment makes integer from pointer without a cast [enabled by default]
+../upload.c:84:21: warning: unused variable ‘n’ [-Wunused-variable]
+Finished building: ../upload.c
+ 
+Building target: keylogger
+Invoking: Cross GCC Linker
+gcc  -o "keylogger"  ./netsec.o ./upload.o   
+./upload.o: In function `main':
+/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../upload.c:83: multiple definition of `main'
+./netsec.o:/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../netsec.c:79: first defined here
+./netsec.o: In function `main':
+netsec.c:(.text+0x2c0): undefined reference to `XOpenDisplay'
+netsec.c:(.text+0x304): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x329): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x3c9): undefined reference to `XKeycodeToKeysym'
+netsec.c:(.text+0x3df): undefined reference to `XKeysymToString'
+collect2: ld returned 1 exit status
+make: *** [keylogger] Error 1
+17:38:05 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -rf  ./netsec.o ./upload.o  ./netsec.d ./upload.d  keylogger
+ 
+17:38:05 **** Build of configuration Debug for project keylogger ****
+make all 
+Building file: ../netsec.c
+Invoking: Cross GCC Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"netsec.d" -MT"netsec.d" -o "netsec.o" "../netsec.c"
+../netsec.c: In function ‘main’:
+../netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+../netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+../netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+../netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+../netsec.c: In function ‘bit’:
+../netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+Finished building: ../netsec.c
+ 
+Building file: ../upload.c
+Invoking: Cross GCC Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"upload.d" -MT"upload.d" -o "upload.o" "../upload.c"
+../upload.c: In function ‘upload’:
+../upload.c:40:10: warning: unused variable ‘endbuf1’ [-Wunused-variable]
+../upload.c:27:23: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+../upload.c: In function ‘main’:
+../upload.c:99:31: warning: assignment makes integer from pointer without a cast [enabled by default]
+../upload.c:84:21: warning: unused variable ‘n’ [-Wunused-variable]
+Finished building: ../upload.c
+ 
+Building target: keylogger
+Invoking: Cross GCC Linker
+gcc  -o "keylogger"  ./netsec.o ./upload.o   
+./upload.o: In function `main':
+/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../upload.c:83: multiple definition of `main'
+./netsec.o:/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../netsec.c:79: first defined here
+./netsec.o: In function `main':
+netsec.c:(.text+0x2c0): undefined reference to `XOpenDisplay'
+netsec.c:(.text+0x304): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x329): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x3c9): undefined reference to `XKeycodeToKeysym'
+netsec.c:(.text+0x3df): undefined reference to `XKeysymToString'
+collect2: ld returned 1 exit status
+make: *** [keylogger] Error 1
+17:39:39 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -rf  ./netsec.o ./upload.o  ./netsec.d ./upload.d  keylogger
+ 
+17:39:40 **** Build of configuration Debug for project keylogger ****
+make all 
+Building file: ../netsec.c
+Invoking: Cross GCC Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"netsec.d" -MT"netsec.d" -o "netsec.o" "../netsec.c"
+../netsec.c: In function ‘main’:
+../netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+../netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+../netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+../netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+../netsec.c: In function ‘bit’:
+../netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+Finished building: ../netsec.c
+ 
+Building file: ../upload.c
+Invoking: Cross GCC Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"upload.d" -MT"upload.d" -o "upload.o" "../upload.c"
+../upload.c: In function ‘upload’:
+../upload.c:40:10: warning: unused variable ‘endbuf1’ [-Wunused-variable]
+../upload.c:27:23: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+../upload.c: In function ‘main’:
+../upload.c:99:31: warning: assignment makes integer from pointer without a cast [enabled by default]
+../upload.c:84:21: warning: unused variable ‘n’ [-Wunused-variable]
+Finished building: ../upload.c
+ 
+Building target: keylogger
+Invoking: Cross GCC Linker
+gcc  -o "keylogger"  ./netsec.o ./upload.o   
+./upload.o: In function `main':
+/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../upload.c:83: multiple definition of `main'
+./netsec.o:/home/cristi/Programing/Keylogger/netsecunitn/keylogger/Debug/../netsec.c:79: first defined here
+./netsec.o: In function `main':
+netsec.c:(.text+0x2c0): undefined reference to `XOpenDisplay'
+netsec.c:(.text+0x304): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x329): undefined reference to `XQueryKeymap'
+netsec.c:(.text+0x3c9): undefined reference to `XKeycodeToKeysym'
+netsec.c:(.text+0x3df): undefined reference to `XKeysymToString'
+collect2: ld returned 1 exit status
+make: *** [keylogger] Error 1
+17:40:27 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -f netsec.o upload.o keylogger upload
+17:40:27 **** Build of configuration Debug for project keylogger ****
+make all 
+gcc -c -o netsec.o netsec.c -Wall -lX11 -Wdeprecated-declarations
+netsec.c: In function ‘main’:
+netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+netsec.c: In function ‘bit’:
+netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+gcc  -o keylogger netsec.o -Wall -lX11 -Wdeprecated-declarations
+gcc -c -o upload.o upload.c -Wall -lX11 -Wdeprecated-declarations
+upload.c: In function ‘upload’:
+upload.c:40:10: warning: unused variable ‘endbuf1’ [-Wunused-variable]
+upload.c:27:23: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+upload.c: In function ‘main’:
+upload.c:99:31: warning: assignment makes integer from pointer without a cast [enabled by default]
+upload.c:84:21: warning: unused variable ‘n’ [-Wunused-variable]
+gcc -o upload upload.o -Wall -lX11 -Wdeprecated-declarations
+17:40:39 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+make: Nothing to be done for `all'.
+17:42:41 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+gcc -c -o netsec.o netsec.c -Wall -lX11 -Wdeprecated-declarations
+netsec.c: In function ‘main’:
+netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+gcc  -o keylogger netsec.o -Wall -lX11 -Wdeprecated-declarations
+netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+netsec.c: In function ‘bit’:
+netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+17:44:00 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+make: Nothing to be done for `all'.
+17:45:55 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -f netsec.o upload.o keylogger upload
+17:45:55 **** Build of configuration Debug for project keylogger ****
+make all 
+gcc -c -o netsec.o netsec.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c: In function ‘main’:
+netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness [-Wpointer-sign]
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695) [-Wdeprecated-declarations]
+netsec.c:84:7: warning: unused variable ‘kname’ [-Wunused-variable]
+gcc  -o keylogger netsec.o -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c: In function ‘bit’:
+netsec.c:21:1: warning: control reaches end of non-void function [-Wreturn-type]
+gcc -c -o upload.o upload.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+upload.c: In function ‘upload’:
+upload.c:40:10: warning: unused variable ‘endbuf1’ [-Wunused-variable]
+upload.c:27:23: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+upload.c: In function ‘main’:
+upload.c:99:31: warning: assignment makes integer from pointer without a cast [enabled by default]
+upload.c:84:21: warning: unused variable ‘n’ [-Wunused-variable]
+gcc -o upload upload.o -Wall -lX11 -Wdeprecated-declarations -g -O0
+17:46:05 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+make: Nothing to be done for `all'.

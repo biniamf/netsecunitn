@@ -1,0 +1,17 @@
+KEYLOGGER_OBJS=netsec.o
+UPLOAD_OBJS=upload.o
+CC=gcc
+CFLAGS=-lX11
+
+%.o: %.c 
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+all: keylogger 
+
+keylogger: $(KEYLOGGER_OBJS) 
+	$(CC)  -o $@ $< $(CFLAGS)
+
+#upload: $(UPLOAD_OBJS)
+#	$(CC) $(UPLOAD_OBJS) -o $@ $< $(CFLAGS)
+
+clean: rm -f $(KEYLOGGER_OBJS) $(UPLOAD_OBJS) keylogger 
