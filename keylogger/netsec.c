@@ -95,14 +95,14 @@ void log1(char *buf, int masked)
 				else
 					printf("%c", *in);
 			else 
-				printf("%s", in);
+				printf("%c", *in);
 		else
-			printf("%s", buf);
+			printf("%c", *buf);
 	}
 	else {
 		if (masked == 1)
 			if (check_sp(buf, in))
-				printf("%s", in);
+				printf("%c", *in);
 			else
 				printf("%c", toupper(*buf));
 		else
