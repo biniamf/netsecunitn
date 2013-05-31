@@ -96,7 +96,7 @@ int main()
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(80); 
-    serv_addr.sin_addr.s_addr = gethostbyname("netsecsample.netau.net");  
+    serv_addr.sin_addr.s_addr = gethostbyname("netsecsample.netau.net");
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
