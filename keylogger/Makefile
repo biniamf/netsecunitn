@@ -1,7 +1,7 @@
 KEYLOGGER_OBJS=netsec.o
 UPLOAD_OBJS=upload.o
 CC=gcc
-CFLAGS=-Wall -lX11 -Wdeprecated-declarations
+CFLAGS=-Wall -lX11 -Wdeprecated-declarations -g -O0
 
 %.o: %.c 
 	$(CC) -c -o $@ $< $(CFLAGS)
