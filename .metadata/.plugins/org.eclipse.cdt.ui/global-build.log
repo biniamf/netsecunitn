@@ -219,3 +219,54 @@ gcc -o upload upload.o -Wall -lX11 -Wdeprecated-declarations -g -O0
 17:46:05 **** Incremental Build of configuration Debug for project keylogger ****
 make all 
 make: Nothing to be done for `all'.
+17:53:37 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -f netsec.o upload.o keylogger upload
+17:53:37 **** Build of configuration Debug for project keylogger ****
+make all 
+gcc -c -o netsec.o netsec.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c: In function ‘main’:
+netsec.c:93:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:97:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+gcc  -o keylogger netsec.o -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c:104:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695)
+netsec.c:84:7: warning: unused variable ‘kname’
+netsec.c: In function ‘bit’:
+netsec.c:21:1: warning: control reaches end of non-void function
+gcc -c -o upload.o upload.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+upload.c: In function ‘upload’:
+upload.c:40:10: warning: unused variable ‘endbuf1’
+upload.c: In function ‘main’:
+upload.c:99:31: warning: assignment makes integer from pointer without a cast
+upload.c:84:21: warning: unused variable ‘n’
+gcc -o upload upload.o -Wall -lX11 -Wdeprecated-declarations -g -O0
+17:54:04 **** Incremental Build of configuration Debug for project keylogger ****
+make all 
+make: Nothing to be done for `all'.
+18:05:21 **** Clean-only build of configuration Debug for project keylogger ****
+make clean 
+rm -f netsec.o upload.o keylogger upload
+18:05:21 **** Build of configuration Debug for project keylogger ****
+make all 
+gcc -c -o netsec.o netsec.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c: In function ‘log1’:
+netsec.c:96:6: warning: implicit declaration of function ‘toupper’
+netsec.c: In function ‘main’:
+netsec.c:128:2: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+gcc  -o keylogger netsec.o -Wall -lX11 -Wdeprecated-declarations -g -O0
+netsec.c:132:3: warning: pointer targets in passing argument 2 of ‘XQueryKeymap’ differ in signedness
+/usr/include/X11/Xlib.h:2986:12: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+netsec.c:139:6: warning: ‘XKeycodeToKeysym’ is deprecated (declared at /usr/include/X11/Xlib.h:1695)
+netsec.c:119:7: warning: unused variable ‘kname’
+netsec.c: In function ‘bit’:
+netsec.c:21:1: warning: control reaches end of non-void function
+gcc -c -o upload.o upload.c -Wall -lX11 -Wdeprecated-declarations -g -O0
+upload.c: In function ‘upload’:
+upload.c:40:10: warning: unused variable ‘endbuf1’
+upload.c: In function ‘main’:
+upload.c:99:31: warning: assignment makes integer from pointer without a cast
+upload.c:84:21: warning: unused variable ‘n’
+gcc -o upload upload.o -Wall -lX11 -Wdeprecated-declarations -g -O0

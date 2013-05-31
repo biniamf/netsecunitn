@@ -6,6 +6,8 @@
 <collector id="org.eclipse.cdt.make.core.PerProjectSICollector">
 <includePath path="/usr/lib/gcc/x86_64-linux-gnu/4.6/include"/>
 <includePath path="/usr/local/include"/>
+<includePath path="/usr/lib/gcc/x86_64-linux-gnu/4.5.4/include"/>
+<includePath path="/usr/lib/gcc/x86_64-linux-gnu/4.5.4/include-fixed"/>
 <includePath path="/usr/lib/gcc/x86_64-linux-gnu/4.6/include-fixed"/>
 <includePath path="/usr/include/x86_64-linux-gnu"/>
 <includePath path="/usr/include"/>
@@ -13,8 +15,11 @@
 <definedSymbol symbol="__STDC_HOSTED__=1"/>
 <definedSymbol symbol="__GNUC__=4"/>
 <definedSymbol symbol="__GNUC_MINOR__=6"/>
+<definedSymbol symbol="__GNUC_MINOR__=5"/>
 <definedSymbol symbol="__GNUC_PATCHLEVEL__=3"/>
+<definedSymbol symbol="__GNUC_PATCHLEVEL__=4"/>
 <definedSymbol symbol="__VERSION__=&quot;4.6.3&quot;"/>
+<definedSymbol symbol="__VERSION__=&quot;4.5.4&quot;"/>
 <definedSymbol symbol="__FINITE_MATH_ONLY__=0"/>
 <definedSymbol symbol="_LP64=1"/>
 <definedSymbol symbol="__LP64__=1"/>
