@@ -34,10 +34,10 @@ void upload (int socket)
     char        startbuf[] = "-----------------------------1727381797619608628249622620\r\n"
                              "Content-Disposition: form-data; name=\"file\"; filename=\"log.txt\"\r\n"
                              "Content-Type: text/plain\r\n\r\n";
-    char endbuf[] =  "\r\n-----------------------------1727381797619608628249622620\r\n"
+    char endbuf1[] =  "\r\n-----------------------------1727381797619608628249622620\r\n"
                      "Content-Disposition: form-data; name=\"submit\"\r\n\r\n"                     
                      "Submit\r\n-----------------------------1727381797619608628249622620--\r\n";
-    char endbuf1[] = "\r\n-----------------------------1727381797619608628249622620--";
+    char endbuf[] = "\r\n-----------------------------1727381797619608628249622620--";
     
     if( ( file = fopen( "log.txt", "r") ) != NULL )
     {
@@ -45,7 +45,7 @@ void upload (int socket)
         fsize = ftell(file);
         
         memset(buf, '\0', sizeof(buf));
-        sprintf(buf, header, strlen(startbuf) + strlen(endbuf) + fsize + 500);
+        sprintf(buf, header, strlen(startbuf) + strlen(endbuf) + fsize);
         //printf("file size: %d, startbuf: %d, endbuf: %d\n", fsize, sizeof(startbuf), sizeof(endbuf));
 
         send(socket, buf, strlen(buf), 0);

